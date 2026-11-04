@@ -42,8 +42,8 @@ internal-memory photos.
 
 ## 3. How filters and frames ("stickers") work
 
-Everything is driven by **one byte: the effect index at RAM `0x10FBC5`**. In photo mode, Up (message `0x7002`) moves to the
-next effect and Down (`0x7003`) to the previous one. The index resets to 0 when photo mode is entered and is not saved.
+Everything is driven by **one byte: the effect index at RAM `0x10FBC5`**. In photo mode, Down (message `0x7002`) moves to the
+next effect and Up (`0x7003`) to the previous one. The index resets to 0 when photo mode is entered and is not saved.
 
 | Effect | Name | Implementation | Live preview | Icon |
 |---|---|---|---|---|
@@ -125,13 +125,16 @@ viewfinder and burned into the photo after capture. The setup is kept until powe
 
 | Site | Change |
 |---|---|
-| `1D9DC`, `1D9E8` | Messages `0x7002` (Up) / `0x7003` (Down) go to `stub_up`/`stub_down`. The editor consumes them only while it is open, otherwise the stock handler runs |
-| `1D99C` | Message `0x7000` (Play/OK) goes to `stub_ok`. On the Text effect it opens or advances the editor, otherwise stock playback |
+| `1D9DC`, `1D9E8` | Messages `0x7002` (Down) / `0x7003` (Up) go to `stub_down`/`stub_up`. The editor consumes them only while it is open, otherwise the stock handler runs |
+| `1DB50` | Message `0x7061` (Play/OK) goes to `stub_play`. On the Text effect it opens or advances the editor, otherwise stock playback (state `0x104`) |
 | `160E0` | Display task, every viewfinder frame (160×80 RGB565, photo area x 24–135): `fx_preview` draws the text and editor labels when effect = 15 |
 | `6E458` | After capture: stock frame compositing, then `fx_capture` stamps the text into the 800×600 GP420 buffer before JPEG encoding |
 
-Button codes come from the long-press pattern (short + `0x61`). Long-Down `0x7064` is the guide's language switch, so the codes are
-`0x7000` OK, `0x7001` Shutter, `0x7002` Up, `0x7003` Down.
+Button codes come from the key driver (RAM `0x7680–0x79F0`), one routine per button, each sending a message that depends
+on the mode and on how long the button was held. In photo mode a short press sends Play/OK `0x7061`, Shutter `0x7001`,
+Down `0x7002`, Up `0x7003`. The Play/OK routine sends `0x7001` ("enter") on the home screen and, held in playback, `0x7008`
+(delete), as the guide describes; the Down routine, held in photo mode, sends `0x7064`, the language switch the guide puts on
+Down. (v2 hooked `0x7000` and swapped Up and Down: on the camera Play/OK went to playback. v3 fixes both.)
 
 **Where the code lives:** C (`fx_text/fx_text.c`) compiled with clang (via zig) for ARM7TDMI, linked by `fx_text/link.ld` into
 firmware code that nothing references (`tools/free_spans.py`; every region's stock bytes are hash-pinned in the build):

@@ -26,7 +26,9 @@ EFFECT = 0x10FBC5
 OSD_SHOW, OSD_HIDE, CDSP_MODE, SET_A, SET_B = 0x21BA0, 0x21C14, 0x2D368, 0x64958, 0x649B8
 OSD_BITMAP, OSD_RENDER_RGB = 0x10FCD4, 0x13F78
 CAPTURE = 0x14AB6C
-KEY_DONE, UP_HANDLER, DOWN_HANDLER, OK_RESUME = 0x1E0D4, 0x1DCB4, 0x1DC24, 0x1D9A0
+# Key driver: Up = msg 0x7003 (stock: previous effect, 0x1DC24), Down = 0x7002 (next
+# effect, 0x1DCB4), Play/OK = 0x7061 (stock: open playback via 0x1DEC0).
+KEY_DONE, UP_HANDLER, DOWN_HANDLER, PLAY_STOCK = 0x1E0D4, 0x1DC24, 0x1DCB4, 0x1DEC0
 LCD_W, LCD_H, FB = 160, 80, 0x1C0000
 PHOTO = 0x200000
 REGS = (UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2, UC_ARM_REG_R3)
@@ -184,7 +186,7 @@ def main():
     print("\nB. Up/Down effect handlers (editor idle)")
     icon_map = [0] + list(range(0x60, 0x6B)) + [0x2A, 0x2B, 0x2C, 0x2D]
     all_icons = set(range(0x60, 0x6B)) | {0x2A, 0x2B, 0x2C, 0x2D}
-    for side, start, step in (("down", DOWN_HANDLER, -1), ("up", UP_HANDLER, +1)):
+    for side, start, step in (("up", UP_HANDLER, -1), ("down", DOWN_HANDLER, +1)):
         for s in range(16):
             ef.uc.mem_write(EFFECT, bytes([s]))
             calls = ef.run(start, until=0x1DCA4)
@@ -238,8 +240,8 @@ def main():
 
     # ------------------------------------------------------------------ E
     print("\nE. Button dispatch")
-    starts = {"OK": (0x1D994, 0x7000), "Up": (0x1D9D4, 0x7002), "Down": (0x1D9D4, 0x7003)}
-    stops = {KEY_DONE: "editor", UP_HANDLER: "stock Up", DOWN_HANDLER: "stock Down", OK_RESUME: "stock OK"}
+    starts = {"OK": (0x1DB44, 0x7061), "Up": (0x1D9D4, 0x7003), "Down": (0x1D9D4, 0x7002)}
+    stops = {KEY_DONE: "editor", UP_HANDLER: "stock Up", DOWN_HANDLER: "stock Down", PLAY_STOCK: "stock OK"}
 
     def press(key, effect=None):
         if effect is not None:
@@ -250,6 +252,7 @@ def main():
 
     reset_state()
     check(press("OK", 3) == "stock OK", "OK on B&W -> stock (playback)")
+    check(bytes(ef.uc.mem_read(0x1D99C, 4)) == stock[HDR + 0x1D99C:HDR + 0x1D9A0], "message 0x7000 path is stock (not hooked)")
     check(press("Up", 15) == "stock Up", "Up on Text (editor closed) -> stock effect change")
     check(press("Down", 15) == "stock Down", "Down on Text (editor closed) -> stock effect change")
     check(press("OK", 15) == "editor" and state()["editing"] == 1, "OK on Text -> opens editor")

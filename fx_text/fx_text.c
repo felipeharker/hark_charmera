@@ -352,22 +352,16 @@ void fx_hide_effect_icons(void)
                          "b " #cont "\n");                              \
     }
 
-/* Up (msg 0x7002) and Down (msg 0x7003): editor first, else stock effect handlers */
+/* The key driver (RAM 0x7680-0x79F0) sends, for a short press in photo mode:
+ * Up 0x7003, Down 0x7002, Play/OK 0x7061, Shutter 0x7001. (Long Down sends
+ * 0x7064, the language switch; long Play in playback sends 0x7008, delete.)
+ * Up and Down: the editor first, else the stock effect handlers (Up = previous). */
 STUB_KEY(stub_up, 1, FW_UP_HANDLER)
 STUB_KEY(stub_down, 2, FW_DOWN_HANDLER)
 
-/* Play/OK (msg 0x7000): replaces "bl FW_OK_FIRST_CALL" at the start of the stock handler */
-__attribute__((naked, used)) void stub_ok(void)
-{
-    __asm__ volatile("push {r0-r3, r12, lr}\n"
-                     "mov r0, #0\n"
-                     "bl fx_key\n"
-                     "cmp r0, #0\n"
-                     "pop {r0-r3, r12, lr}\n"
-                     "bne FW_KEY_DONE\n"
-                     "bl FW_OK_FIRST_CALL\n"
-                     "b FW_OK_RESUME\n");
-}
+/* Play/OK (msg 0x7061): replaces "beq FW_PLAY_STOCK" in the photo-mode
+ * dispatch, which has just set r1 = 0x104 (open playback); r1 is kept. */
+STUB_KEY(stub_play, 0, FW_PLAY_STOCK)
 
 /* display task, effects other than Pixel: draw on the frame (r5) then continue */
 __attribute__((naked, used)) void stub_disp(void)

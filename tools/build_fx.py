@@ -174,12 +174,14 @@ def patch(img, looks, stamp, outdir):
     for name in FREE_REGIONS:
         img.check_region(name)
 
-    # ---- 1. effect wheel 0..15 (Up = next, Down = previous), raw effect passed to cdsp_mode
-    img.put_insn(0x1DC70, "moveq r0, #%d" % LAST_EFFECT, "moveq r0, #0xb", "down: wrap 0 -> 15")
-    img.put_insn(0x1DC78, "beq 0x1DC94", "beq 0x1DC90", "down: wrap path keeps effect in r0")
-    img.put_insn(0x1DC8C, "b 0x1DC94", "bls 0x1DC94", "down: no clamp to 0..3")
-    img.put_insn(0x1DCFC, "cmp r0, #%d" % LAST_EFFECT, "cmp r0, #0xb", "up: wrap after 15")
-    img.put_insn(0x1DD18, "b 0x1DD28", "cmp r0, #3", "up: no clamp to 0..3")
+    # ---- 1. effect wheel 0..15, raw effect passed to cdsp_mode. The key driver
+    #      (RAM 0x7680..0x79F0) sends Up = msg 0x7003 -> handler 0x1DC24 (previous
+    #      effect) and Down = msg 0x7002 -> handler 0x1DCB4 (next effect).
+    img.put_insn(0x1DC70, "moveq r0, #%d" % LAST_EFFECT, "moveq r0, #0xb", "up: wrap 0 -> 15")
+    img.put_insn(0x1DC78, "beq 0x1DC94", "beq 0x1DC90", "up: wrap path keeps effect in r0")
+    img.put_insn(0x1DC8C, "b 0x1DC94", "bls 0x1DC94", "up: no clamp to 0..3")
+    img.put_insn(0x1DCFC, "cmp r0, #%d" % LAST_EFFECT, "cmp r0, #0xb", "down: wrap after 15")
+    img.put_insn(0x1DD18, "b 0x1DD28", "cmp r0, #3", "down: no clamp to 0..3")
 
     # ---- 2. cdsp_mode rewrite (table driven; stock modes 0..3 byte-identical)
     params = list(STOCK_PARAMS)
@@ -235,11 +237,11 @@ def patch(img, looks, stamp, outdir):
     # ---- 5. hooks into the stock firmware
     s = syms
     img.put_insn(0x1DD38, "bl %d" % s["fx_icon_for_effect"], "add r0, r0, #0x5f", "show: icon id via table")
-    img.put_insn(0x1DC60, "bl %d" % s["fx_hide_effect_icons"], "bl %d" % OSD_HIDE, "down: hide all effect icons")
-    img.put_insn(0x1DCF0, "bl %d" % s["fx_hide_effect_icons"], "bl %d" % OSD_HIDE, "up: hide all effect icons")
-    img.put_insn(0x1D9DC, "beq %d" % s["stub_up"], "beq 0x1DCB4", "msg 0x7002 Up -> text editor first")
-    img.put_insn(0x1D9E8, "beq %d" % s["stub_down"], "beq 0x1DC24", "msg 0x7003 Down -> text editor first")
-    img.put_insn(0x1D99C, "b %d" % s["stub_ok"], "bl 0x60A04", "msg 0x7000 Play/OK -> text editor first")
+    img.put_insn(0x1DC60, "bl %d" % s["fx_hide_effect_icons"], "bl %d" % OSD_HIDE, "up: hide all effect icons")
+    img.put_insn(0x1DCF0, "bl %d" % s["fx_hide_effect_icons"], "bl %d" % OSD_HIDE, "down: hide all effect icons")
+    img.put_insn(0x1D9DC, "beq %d" % s["stub_down"], "beq 0x1DCB4", "msg 0x7002 Down -> text editor first")
+    img.put_insn(0x1D9E8, "beq %d" % s["stub_up"], "beq 0x1DC24", "msg 0x7003 Up -> text editor first")
+    img.put_insn(0x1DB50, "beq %d" % s["stub_play"], "beq 0x1DEC0", "msg 0x7061 Play/OK -> text editor first")
     img.put_insn(0x160E0, "bhi %d" % s["stub_disp"], "bhi 0x16120", "viewfinder: draw text")
     img.put_insn(0x6E458, "bl %d" % s["stub_cap"], "bl 0xECF0", "after capture: stamp text")
 

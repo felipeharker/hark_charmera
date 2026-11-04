@@ -79,7 +79,7 @@
   <h1 class="title">Charmera</h1>
   <p class="subtitle">Four new effects for the Kodak Charmera keychain camera, patched into its stock firmware</p>
   <p class="dateline">
-    <span>Version 2</span>
+    <span>Version 3</span>
     <span class="sep" aria-hidden="true">|</span>
     <span>4 Nov. 2026</span>
     <span class="sep" aria-hidden="true">|</span>
@@ -119,7 +119,7 @@
 <section class="section" id="sec-effects">
 <h2 class="section-heading">The Effects</h2>
 
-<p class="body-text">In photo mode, Up and Down step through the effects; the four new ones follow the last Pixel filter, and Down from Standard goes straight to Text. The camera returns to Standard each time photo mode opens.</p>
+<p class="body-text">In photo mode, Down steps forward through the effects and Up back; the four new ones follow the last Pixel filter, and Up from Standard goes straight to Text. The camera returns to Standard each time photo mode opens.</p>
 
 <div class="table-scroll">
 <table class="table">
@@ -253,7 +253,7 @@
   <dt>Memory</dt>
   <dd>The first megabyte of flash is copied into RAM at power-on, 512 bytes lower: RAM address = flash offset &minus; <span class="data">0x200</span>. Frames, icons and sounds are in a compressed resource pack at <span class="data">0x120000</span>.</dd>
   <dt>Effect index</dt>
-  <dd>One byte at <span class="data">0x10FBC5</span> selects everything. Up and Down, messages <span class="data">0x7002</span> and <span class="data">0x7003</span> in photo mode, step it.</dd>
+  <dd>One byte at <span class="data">0x10FBC5</span> selects everything. Down and Up, messages <span class="data">0x7002</span> and <span class="data">0x7003</span> in photo mode, step it; Play/OK is <span class="data">0x7061</span>.</dd>
   <dt>Color looks</dt>
   <dd>The routine at <span class="data">0x2D368</span> sends the image processor its four numbers. It is rewritten as a table with three more rows; the stock four send the same values as before.</dd>
   <dt>Frames</dt>
@@ -370,7 +370,7 @@
     <a href="https://dove.felipeharker.org/">Dove Habitat</a>
     <a href="/" aria-current="page">Charmera</a>
   </nav>
-  <p>Firmware <span class="data">JH5408 20250520</span>, version 2 of the patch, 4 November 2026. Kodak and Charmera are trademarks of their owners; this project is not affiliated with them.</p>
+  <p>Firmware <span class="data">JH5408 20250520</span>, version 3 of the patch, 4 November 2026. Kodak and Charmera are trademarks of their owners; this project is not affiliated with them.</p>
   <p>Set in Inter or Source Serif 4, with IBM Plex Mono. Static HTML; no framework. Built to the <a href="https://felipeharker.org/standards/">Hark web standards</a>.</p>
 </footer>
 

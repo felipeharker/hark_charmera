@@ -9,10 +9,9 @@ MEMORY {
 /* stock firmware entry points (RAM addresses) */
 FW_OSD_HIDE       = 0x021C14;
 FW_KEY_DONE       = 0x01E0D4;   /* photo-mode loop: message handled */
-FW_UP_HANDLER     = 0x01DCB4;   /* stock Up (msg 0x7002): next effect */
-FW_DOWN_HANDLER   = 0x01DC24;   /* stock Down (msg 0x7003): previous effect */
-FW_OK_FIRST_CALL  = 0x060A04;   /* first call in stock Play/OK (msg 0x7000) handler */
-FW_OK_RESUME      = 0x01D9A0;
+FW_UP_HANDLER     = 0x01DC24;   /* stock handler for Up (msg 0x7003): previous effect */
+FW_DOWN_HANDLER   = 0x01DCB4;   /* stock handler for Down (msg 0x7002): next effect */
+FW_PLAY_STOCK     = 0x01DEC0;   /* stock Play/OK (msg 0x7061): post state r1 = 0x104, playback */
 FW_DISP_RESUME    = 0x016120;   /* display task after the Pixel-filter branch */
 FW_FRAME_APPLY    = 0x00ECF0;   /* stock frame compositing after capture */
 SECTIONS {

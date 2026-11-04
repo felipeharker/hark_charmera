@@ -85,7 +85,7 @@ To change a look, edit `looks.json`. To change the text stamp, edit
 1. Charge the camera. Back up `DCIM` from the SD card.
 2. Copy **one** `JH_5408…_….bin` to the **root** of the FAT32 card, with no other `JH_5408*.bin` beside it. Don't rename it.
 3. With the camera off, insert the card and power on. Wait for `Upgrade 0% → 100%` without pressing anything.
-4. Remove the card; the camera restarts. Press Up in photo mode past Pixel-Gray: Sepia, Cyanotype, Faded and Text should follow.
+4. Remove the card; the camera restarts. Press Down in photo mode past Pixel-Gray: Sepia, Cyanotype, Faded and Text should follow (or press Up once from Standard for Text).
 
 The update resets the camera's settings and clears photos in its internal
 memory; photos on the SD card are not touched. To go back, flash the stock

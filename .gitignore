@@ -24,7 +24,7 @@ node_modules/
 third_party/
 work/
 build/
-build_v1/
+build_v*/
 source/
 *.bin
 *.elf
