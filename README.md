@@ -12,11 +12,13 @@ opened from its tile on the portfolio, [felipeharker.org](https://felipeharker.o
 | 12 Sepia, 13 Cyanotype, 14 Faded | Color looks applied by the camera's image processor, like the stock Warm/Cool/B&W, so they show live in the viewfinder |
 | 15 **Text** | A pixel-font caption you type, color, place, rotate and size with the camera's buttons; drawn live on the viewfinder and stamped into every photo |
 
-> **Status: not yet run on a camera.** The patch is built from a public dump
-> of the stock firmware and checked by 99 emulator tests that run the real ARM
-> code, but nobody has flashed it yet. For the **original** Charmera only
-> (yellow Kodak logo at power-on); the Millennium and CLOT editions run
-> different firmware.
+> **Status: running on one camera.** The patch is built from a public dump
+> of the stock firmware and checked by 100 emulator tests that run the real
+> ARM code. Version 3 is flashed on an original Charmera: the update applied,
+> the camera starts normally, and Play/OK opens the text editor. Not yet
+> checked on the camera: a photo with the text stamped in, and the strength of
+> the color looks. For the **original** Charmera only (yellow Kodak logo at
+> power-on); the Millennium and CLOT editions run different firmware.
 
 The site is built to the Hark web standards, which live in
 [`hark_web`](https://github.com/felipeharker/hark_web) and are served at
@@ -105,7 +107,7 @@ hark_charmera/
   fx_text/             the text stamp: fx_text.c and link.ld (where it goes in memory)
   tools/
     build_fx.py        patch a dump, compile fx_text, package for the SD updater
-    emu_test.py        run stock and patched code in an emulator (Unicorn): 99 checks
+    emu_test.py        run stock and patched code in an emulator (Unicorn): 100 checks
     fx_tables.py       5x7 font, palette, cosine table, the Text icon
     free_spans.py      find firmware code nothing references (where new code can go)
     reach.py, check_region.py, deadcode.py, fwdis.py, d.py   analysis and disassembly helpers

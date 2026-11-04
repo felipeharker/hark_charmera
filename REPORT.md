@@ -1,7 +1,9 @@
 # Kodak Charmera firmware review: filters, frames and custom effects
 
 Date: 2026-11-04. Firmware analysed: **JH5408 20250520**, built **Oct 14 2025** (original-series Charmera).
-Status: v1 (colour looks) and v2 (looks + Text stamp) are built and emulator-verified. Neither has run on a camera yet.
+Status: v3 (looks + Text stamp, with the Play/OK fix) is built, emulator-verified (100 checks) and flashed on an original
+Charmera, where the update applied, the camera starts normally and Play/OK opens the text editor. Not yet checked on the
+camera: a stamped photo, and the strength of the colour looks.
 Site: https://charmera.felipeharker.org/
 
 ## 1. The Camera
@@ -169,7 +171,7 @@ preview matches the shot, including the viewfinder's slight horizontal stretch. 
 
 ## 8. Risks and what is *not* verified
 
-- **Not run on real hardware.** The emulator covers the changed logic, not the image processor, LCD or encoder.
+- **On hardware, partly.** v3 runs on one original Charmera: it flashed, starts, and Play/OK opens the text editor. A stamped photo and the looks' strength are unchecked there. The emulator covers the changed logic, not the image processor, LCD or encoder.
 - **Look strength** (v1) is a best estimate from Warm/Cool/B&W. Tune in `looks.json`.
 - **Text feature assumptions** inferred from stock code:
   - The frame at `0x160E0` is the 160×80 RGB565 viewfinder; the stock Pixel preview reads and writes it the same way.

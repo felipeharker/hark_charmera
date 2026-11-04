@@ -83,7 +83,7 @@
     <span class="sep" aria-hidden="true">|</span>
     <span>4 Nov. 2026</span>
     <span class="sep" aria-hidden="true">|</span>
-    <span>Not yet run on a camera</span>
+    <span>Running on a camera</span>
   </p>
 </header>
 
@@ -97,7 +97,7 @@
 
 <div class="abstract">
   <p class="abstract-label">Abstract</p>
-  <p>Four effects added to the Charmera&rsquo;s own firmware, after the eleven it ships with. Sepia, Cyanotype and Faded are color looks the camera&rsquo;s image processor applies, so they show live in the viewfinder. Text is a pixel-font caption typed, colored, placed, rotated and sized with the camera&rsquo;s buttons, drawn on the viewfinder and stamped into every photo. Every stock filter and frame still works. The patch is built from a public dump of the stock firmware and checked in an emulator; it has not yet run on a camera.</p>
+  <p>Four effects added to the Charmera&rsquo;s own firmware, after the eleven it ships with. Sepia, Cyanotype and Faded are color looks the camera&rsquo;s image processor applies, so they show live in the viewfinder. Text is a pixel-font caption typed, colored, placed, rotated and sized with the camera&rsquo;s buttons, drawn on the viewfinder and stamped into every photo. Every stock filter and frame still works. The patch is built from a public dump of the stock firmware and checked in an emulator. Version 3 runs on an original Charmera, where the text editor works; a stamped photo and the strength of the color looks are still to be checked there.</p>
 </div>
 
 <nav class="contents" aria-label="Contents">
@@ -289,7 +289,7 @@
 <section class="section" id="sec-verification">
 <h2 class="section-heading">Verification</h2>
 
-<p class="body-text">Without a way to read the flash over USB, the check is an emulator: <code>tools/emu_test.py</code> runs the real ARM code of the stock and the patched firmware in Unicorn and compares them, 99 checks in all.</p>
+<p class="body-text">Without a way to read the flash over USB, the check is an emulator: <code>tools/emu_test.py</code> runs the real ARM code of the stock and the patched firmware in Unicorn and compares them, 100 checks in all.</p>
 
 <ul class="list">
   <li>The stock four color modes send identical values; the new ones send theirs.</li>
@@ -307,7 +307,7 @@
 <h2 class="section-heading">Status and Risks</h2>
 
 <ul class="list">
-  <li><strong>Not yet run on a camera.</strong> The emulator runs the patched code, not the image processor, the screen or the JPEG encoder.</li>
+  <li><strong>Running on one camera.</strong> Version 3 is flashed on an original Charmera, which updated and starts normally, and Play/OK opens the text editor there. A photo with the text stamped in and the strength of the color looks have not been checked on the camera yet; the emulator runs the patched code, not the image processor, the screen or the JPEG encoder.</li>
   <li>The color looks&rsquo; strength is an estimate from the stock ones.</li>
   <li>For the original Charmera only, which powers on to a yellow Kodak logo. The Millennium and CLOT editions run different firmware, and flashing this onto one stops it taking photos.</li>
   <li>Flashing resets the camera&rsquo;s settings and clears photos kept in its internal memory. Photos on the SD card are not touched.</li>
