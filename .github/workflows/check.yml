@@ -1,0 +1,18 @@
+# Checks the site against the Hark standard on every push and pull request:
+# tools/check.mjs, the same check as before a commit. Render deploys a push
+# to main only once this passes (Auto-Deploy: After CI Checks Pass).
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node tools/check.mjs

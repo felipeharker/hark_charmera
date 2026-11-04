@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charmera — Felipe E. Harker</title>
+<meta name="description" content="Charmera: four new effects for the Kodak Charmera keychain camera, patched into its stock firmware — three color looks and a pixel text stamp you set up on the camera.">
+<link rel="canonical" href="https://charmera.felipeharker.org/">
+
+<!-- The card a link to this page shows when it is shared (Open Graph and
+     Twitter). Addresses are absolute, as the protocol requires. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Charmera">
+<meta property="og:title" content="Charmera — Felipe E. Harker">
+<meta property="og:description" content="Four new effects for the Kodak Charmera keychain camera, patched into its stock firmware — three color looks and a pixel text stamp you set up on the camera.">
+<meta property="og:url" content="https://charmera.felipeharker.org/">
+<meta property="og:image" content="https://charmera.felipeharker.org/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- The Hark shared stylesheet, from felipeharker.org, then this site's own. -->
+<link rel="stylesheet" href="https://felipeharker.org/standards/hark.css">
+<link rel="stylesheet" href="assets/site.css">
+<script src="https://felipeharker.org/standards/hark.js"></script>
+</head>
+<body>
+
+<!-- ==========================================================================
+     CHARMERA
+     --------------------------------------------------------------------------
+     The documentation for a set of custom effects patched into the Kodak
+     Charmera's stock firmware, as one static page built to the Hark web
+     standards that every page on felipeharker.org follows. No build step and
+     no framework; the one script is the standard's,
+     https://felipeharker.org/standards/hark.js, which sets the design the
+     reader chose on felipeharker.org's front page.
+
+     Styling is the Hark shared stylesheet, linked from felipeharker.org
+     rather than copied. What this page needs and the standard lacks — a grid
+     of screenshots, and screenshots scaled up with square pixels — is in
+     assets/site.css, commented. No inline `style` attributes.
+
+     Every image is the project's own output: the viewfinder screenshots, the
+     stamped photo and the icons are rendered by the patched firmware's own
+     code in an emulator (tools/emu_test.py), on a test gradient instead of a
+     live view; the look chart is tools/preview_looks.py. Regenerate them
+     from those scripts rather than editing them. Nothing extracted from
+     Kodak's firmware is published.
+
+     This is a project site, opened from its tile on the portfolio, in its
+     Personal section. Its running head and site links are that section's:
+     Portfolio, the Ornithology Report, Dove Habitat and this site, bracketed
+     (tools/site.mjs, NAV). The other three are absolute, because this site
+     is served apart from them, and open in the same tab.
+     ====================================================================== -->
+
+<!-- Running head -------------------------------------------------------
+     The Personal section's links, the same as the colophon's. -->
+<header class="runhead">
+  <a class="runhead-owner" href="https://felipeharker.org/">Felipe E. Harker</a>
+  <nav class="runhead-links" aria-label="Site">
+    <a href="https://felipeharker.org/">Portfolio</a>
+    <a href="https://birds.felipeharker.org/">Ornithology Report</a>
+    <a href="https://dove.felipeharker.org/">Dove Habitat</a>
+    <a href="/" aria-current="page">Charmera</a>
+  </nav>
+</header>
+
+<article class="doc">
+
+<!-- Masthead ------------------------------------------------------------- -->
+<header class="masthead">
+  <p class="kicker">Custom Firmware</p>
+  <h1 class="title">Charmera</h1>
+  <p class="subtitle">Four new effects for the Kodak Charmera keychain camera, patched into its stock firmware</p>
+  <p class="dateline">
+    <span>Version 2</span>
+    <span class="sep" aria-hidden="true">|</span>
+    <span>4 Nov. 2026</span>
+    <span class="sep" aria-hidden="true">|</span>
+    <span>Not yet run on a camera</span>
+  </p>
+</header>
+
+<figure class="plate plate-lead">
+  <img class="pixel" src="img/view-done.png" alt="The camera&rsquo;s 160 by 80 viewfinder with the yellow pixel text HI and a heart, rotated 45 degrees, over the picture" width="160" height="80">
+  <figcaption>
+    <h3 class="plate-title">Text Stamp</h3>
+    <p class="body-text">The viewfinder with a caption set up on the camera: typed, colored, placed, turned 45&deg; and sized. Rendered by the firmware&rsquo;s own drawing code in an emulator, over a test gradient where the live picture would be.</p>
+  </figcaption>
+</figure>
+
+<div class="abstract">
+  <p class="abstract-label">Abstract</p>
+  <p>Four effects added to the Charmera&rsquo;s own firmware, after the eleven it ships with. Sepia, Cyanotype and Faded are color looks the camera&rsquo;s image processor applies, so they show live in the viewfinder. Text is a pixel-font caption typed, colored, placed, rotated and sized with the camera&rsquo;s buttons, drawn on the viewfinder and stamped into every photo. Every stock filter and frame still works. The patch is built from a public dump of the stock firmware and checked in an emulator; it has not yet run on a camera.</p>
+</div>
+
+<nav class="contents" aria-label="Contents">
+  <p class="toc-label">Contents</p>
+  <ul class="toc">
+    <li><a href="#sec-effects">The Effects</a></li>
+    <li><a href="#sec-color-looks">Color Looks</a></li>
+    <li><a href="#sec-text-stamp">Text Stamp</a></li>
+    <li><a href="#sec-how-it-works">How It Works</a></li>
+    <li><a href="#sec-updater">The SD Card Updater</a></li>
+    <li><a href="#sec-verification">Verification</a></li>
+    <li><a href="#sec-status">Status and Risks</a></li>
+    <li><a href="#sec-build">Build and Flash</a></li>
+    <li><a href="#sec-sources">Sources</a></li>
+  </ul>
+</nav>
+
+<!-- The Effects ---------------------------------------------------------- -->
+<section class="section" id="sec-effects">
+<h2 class="section-heading">The Effects</h2>
+
+<p class="body-text">In photo mode, Up and Down step through the effects; the four new ones follow the last Pixel filter, and Down from Standard goes straight to Text. The camera returns to Standard each time photo mode opens.</p>
+
+<div class="table-scroll">
+<table class="table">
+  <thead><tr><th class="num-cell">No.</th><th>Effect</th><th>How it works</th><th>In the viewfinder</th></tr></thead>
+  <tbody>
+    <tr><td class="num-cell">0</td><td>Standard</td><td>Image processor</td><td>Live</td></tr>
+    <tr><td class="num-cell">1&ndash;3</td><td>Warm, Cool, B&amp;W</td><td>Image processor</td><td>Live</td></tr>
+    <tr><td class="num-cell">4&ndash;7</td><td>Four frames</td><td>Overlay composited after the shot</td><td>Preview overlay</td></tr>
+    <tr><td class="num-cell">8&ndash;11</td><td>Pixel red, blue, yellow, gray</td><td>Code after the shot</td><td>Live, in code</td></tr>
+    <tr><td class="num-cell">12&ndash;14</td><td><strong>Sepia, Cyanotype, Faded</strong></td><td>Image processor</td><td>Live</td></tr>
+    <tr><td class="num-cell">15</td><td><strong>Text</strong></td><td>Code after the shot</td><td>Live, in code</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- Color Looks ------------------------------------------------------------ -->
+<section class="section" id="sec-color-looks">
+<h2 class="section-heading">Color Looks</h2>
+
+<p class="body-text">The stock Warm, Cool and B&amp;W are four numbers each, sent to the image processor: a shift and a gain for each of the two color axes, blue&ndash;yellow and red&ndash;cyan. The new looks are three more sets of the same four numbers, so they behave exactly like the stock ones, live in the viewfinder and in the photo. Their values are read from <code>looks.json</code>.</p>
+
+<div class="table-scroll">
+<table class="table">
+  <thead><tr><th>Look</th><th class="num-cell">Blue&ndash;yellow shift</th><th class="num-cell">Red&ndash;cyan shift</th><th class="num-cell">Gains</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>Warm (stock)</td><td class="num-cell">&minus;20</td><td class="num-cell">+20</td><td class="num-cell">5, 20</td><td>Colors muted, warmed</td></tr>
+    <tr><td>Sepia</td><td class="num-cell">&minus;14</td><td class="num-cell">+12</td><td class="num-cell">0, 0</td><td>Brown monochrome</td></tr>
+    <tr><td>Cyanotype</td><td class="num-cell">+22</td><td class="num-cell">&minus;14</td><td class="num-cell">0, 0</td><td>Blue monochrome</td></tr>
+    <tr><td>Faded</td><td class="num-cell">&minus;8</td><td class="num-cell">+6</td><td class="num-cell">12, 12</td><td>Colors at about a third, a slight warm cast</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="caption">Gains in 32nds: 32 leaves a color axis as it is, 0 removes it.</p>
+
+<figure class="plate">
+  <img src="img/looks.png" alt="A test chart of gray ramps, hue bands and color patches in Standard, Warm, Cool and B&amp;W, then in the new Sepia, Cyanotype and Faded" width="1490" height="550" loading="lazy">
+  <figcaption>
+    <h3 class="plate-title">The Looks on a Test Chart</h3>
+    <p class="body-text">A preview made from the four numbers, not from the camera: what each number does is worked out from the stock looks, so the real tint may be a step stronger or weaker.</p>
+  </figcaption>
+</figure>
+
+<figure class="plate">
+  <img class="pixel icon-strip" src="img/icons.png" alt="Four 16-pixel icons: a brown, a blue and a pale gray half circle, and a white T" width="76" height="16" loading="lazy">
+  <figcaption>
+    <h3 class="plate-title">New Icons</h3>
+    <p class="body-text">Each effect shows a 16-pixel icon in the corner of the viewfinder. The looks reuse the B&amp;W half circle in their own colors; Text is a T. They fill four icon slots the firmware ships empty.</p>
+  </figcaption>
+</figure>
+</section>
+
+<!-- Text Stamp ------------------------------------------------------------- -->
+<section class="section" id="sec-text-stamp">
+<h2 class="section-heading">Text Stamp</h2>
+
+<p class="body-text">The Charmera has five buttons: Shutter, On/Off, Up, Down and Play/OK. With Text selected, Play/OK opens an editor in the viewfinder; in every step Up and Down change the value and Play/OK confirms it and moves on.</p>
+
+<dl class="facts">
+  <dt>Open</dt>
+  <dd>Up or Down to the T icon, then Play/OK. With no text yet the viewfinder says OK:EDIT.</dd>
+  <dt>Letters</dt>
+  <dd>A&ndash;Z, 0&ndash;9, space and <span class="data">! ? . , - &amp; : &rsquo; &hearts;</span>; Play/OK keeps a letter and moves to the next, up to twelve. The tick at the end of the list finishes the text.</dd>
+  <dt>Color</dt>
+  <dd>White, yellow, red, blue, green, pink or black, with a contrasting outline.</dd>
+  <dt>X and Y</dt>
+  <dd>Up moves the text right or up, Down left or down, in steps of 5% of the frame.</dd>
+  <dt>Rotation</dt>
+  <dd>15&deg; a press; Up turns it counter-clockwise.</dd>
+  <dt>Size</dt>
+  <dd>10% a press, from 10% to 400%, starting at 200%. Play/OK here closes the editor.</dd>
+  <dt>Shoot</dt>
+  <dd>The Shutter takes the photo with the text stamped in. Video is not stamped.</dd>
+  <dt>Memory</dt>
+  <dd>The setup stays until the camera is switched off. Opening the editor again starts from the current text.</dd>
+</dl>
+
+<div class="screens">
+  <figure class="screen">
+    <img class="pixel" src="img/view-idle.png" alt="Viewfinder with OK:EDIT in white" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Text selected, nothing set yet</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-text.png" alt="Viewfinder labeled TEXT, with HI and a heart typed and the tick highlighted" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Letters: the tick ends the text</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-color.png" alt="Viewfinder labeled COLOR, with the text in yellow" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Color: yellow</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-x.png" alt="Viewfinder labeled X 70, the text moved right" width="160" height="80" loading="lazy">
+    <figcaption class="caption">X: 70%</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-y.png" alt="Viewfinder labeled Y 35, the text moved up" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Y: 35%</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-rot.png" alt="Viewfinder labeled ROT 45, the text turned 45 degrees" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Rotation: 45&deg;</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-size.png" alt="Viewfinder labeled SIZE 250, the text larger" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Size: 250%</figcaption>
+  </figure>
+  <figure class="screen">
+    <img class="pixel" src="img/view-done.png" alt="Viewfinder with the finished caption and no label" width="160" height="80" loading="lazy">
+    <figcaption class="caption">Editor closed, ready to shoot</figcaption>
+  </figure>
+</div>
+
+<figure class="plate">
+  <img class="pixel" src="img/stamp.png" alt="An 800 by 600 test photo, a blue gradient, with HI and a heart in yellow outlined pixel letters, turned 45 degrees" width="800" height="600" loading="lazy">
+  <figcaption>
+    <h3 class="plate-title">The Stamped Photo</h3>
+    <p class="body-text">The same setup stamped into an 800 by 600 test photo by the code that runs after the shot, before the camera encodes the JPEG. The viewfinder and the photo are drawn by one routine, so the text lands where it showed.</p>
+  </figcaption>
+</figure>
+</section>
+
+<!-- How It Works ----------------------------------------------------------- -->
+<section class="section" id="sec-how-it-works">
+<h2 class="section-heading">How It Works</h2>
+
+<p class="body-text">The camera mounts on a computer as its SD card only; the firmware sits on a separate 2 MB flash chip that USB cannot read. The work started from two independent public dumps of that chip, identical in all their code, and from photos taken with the stock frames, which match the dumped frame art pixel for pixel.</p>
+
+<dl class="facts">
+  <dt>Hardware</dt>
+  <dd>A Generalplus <span class="data">GPCV1235F</span> (ARM7, no memory protection), a 2 MB SPI flash chip and a 160 by 80 screen. Firmware <span class="data">JH5408 20250520</span>, built 14 Oct. 2025.</dd>
+  <dt>Memory</dt>
+  <dd>The first megabyte of flash is copied into RAM at power-on, 512 bytes lower: RAM address = flash offset &minus; <span class="data">0x200</span>. Frames, icons and sounds are in a compressed resource pack at <span class="data">0x120000</span>.</dd>
+  <dt>Effect index</dt>
+  <dd>One byte at <span class="data">0x10FBC5</span> selects everything. Up and Down, messages <span class="data">0x7002</span> and <span class="data">0x7003</span> in photo mode, step it.</dd>
+  <dt>Color looks</dt>
+  <dd>The routine at <span class="data">0x2D368</span> sends the image processor its four numbers. It is rewritten as a table with three more rows; the stock four send the same values as before.</dd>
+  <dt>Frames</dt>
+  <dd>Four 800 by 600 overlays, three compressed strips each, composited onto the photo after the shot (<span class="data">0xECF0</span>), with a 112 by 80 preview on the screen.</dd>
+  <dt>Pixel filters</dt>
+  <dd>Code that runs after the shot (<span class="data">0x6E2DC</span>) and on every viewfinder frame (<span class="data">0x15EB8</span>): brightness 124 and up becomes the palette color, darker becomes black.</dd>
+  <dt>New code</dt>
+  <dd>About 3.5 KB of C, compiled for the ARM7 and linked into four stretches of firmware code that nothing calls &mdash; the largest a disabled USB-webcam handler &mdash; found by a reachability analysis of the whole image, and checked byte for byte before each build writes over them.</dd>
+  <dt>Hooks</dt>
+  <dd>Five redirected branches: Up, Down and Play/OK reach the editor first and pass through when it is closed; the display task draws the text on each viewfinder frame (<span class="data">0x160E0</span>); after the shot the text is stamped into the photo before JPEG encoding (<span class="data">0x6E458</span>).</dd>
+</dl>
+</section>
+
+<!-- The SD Card Updater ---------------------------------------------------- -->
+<section class="section" id="sec-updater">
+<h2 class="section-heading">The SD Card Updater</h2>
+
+<p class="body-text">The camera updates itself from its SD card at power-on, with code that lives in the firmware itself. Read from the disassembly:</p>
+
+<dl class="facts">
+  <dt>File</dt>
+  <dd><span class="data">JH_5408&lt;YYYYMMDDhhmm&gt;_&lt;8 hex digits&gt;.bin</span> in the root of the card. The hex is the sum of every byte in the file.</dd>
+  <dt>Trigger</dt>
+  <dd>The date stamp in the name differs from the one the firmware carries. This build writes its own stamp into itself, so the file can stay on the card without flashing again at every power-on.</dd>
+  <dt>Writing</dt>
+  <dd>From the start of flash, 64 KB at a time, every 256-byte page read back and checked.</dd>
+  <dt>Last erase</dt>
+  <dd>One more 64 KB block is erased after the file&rsquo;s end. A full 2 MB file wraps round and erases the start of the firmware, so every package here stops 128 KB short, and the extra erase lands on an empty block.</dd>
+</dl>
+</section>
+
+<!-- Verification ----------------------------------------------------------- -->
+<section class="section" id="sec-verification">
+<h2 class="section-heading">Verification</h2>
+
+<p class="body-text">Without a way to read the flash over USB, the check is an emulator: <code>tools/emu_test.py</code> runs the real ARM code of the stock and the patched firmware in Unicorn and compares them, 99 checks in all.</p>
+
+<ul class="list">
+  <li>The stock four color modes send identical values; the new ones send theirs.</li>
+  <li>Up and Down from every effect reach the right next one, show its icon and hide the rest.</li>
+  <li>After a shot, frames run only for the frame effects and the Pixel code only for Pixel.</li>
+  <li>Up, Down and Play/OK reach the editor only on Text and only while it is open; everywhere else they do what they did.</li>
+  <li>A whole editor session, driven through the camera&rsquo;s own button handling, renders the viewfinder at every step: the screenshots on this page.</li>
+  <li>The stamp never writes outside the photo, even at the largest size in a corner.</li>
+  <li>Every changed byte lies in a region the build names, and the build is reproducible: the same inputs give the same file.</li>
+</ul>
+</section>
+
+<!-- Status and Risks ------------------------------------------------------- -->
+<section class="section" id="sec-status">
+<h2 class="section-heading">Status and Risks</h2>
+
+<ul class="list">
+  <li><strong>Not yet run on a camera.</strong> The emulator runs the patched code, not the image processor, the screen or the JPEG encoder.</li>
+  <li>The color looks&rsquo; strength is an estimate from the stock ones.</li>
+  <li>For the original Charmera only, which powers on to a yellow Kodak logo. The Millennium and CLOT editions run different firmware, and flashing this onto one stops it taking photos.</li>
+  <li>Flashing resets the camera&rsquo;s settings and clears photos kept in its internal memory. Photos on the SD card are not touched.</li>
+  <li>A power cut during an update can leave the camera needing its flash chip reprogrammed directly.</li>
+  <li>Start-up and the updater are not touched, so as long as the camera starts, a stock package from the same build puts the original firmware back.</li>
+</ul>
+</section>
+
+<!-- Build and Flash -------------------------------------------------------- -->
+<section class="section" id="sec-build">
+<h2 class="section-heading">Build and Flash</h2>
+
+<p class="body-text">No firmware is published here, original or patched: it is Kodak&rsquo;s. The build takes a public dump of the stock firmware and patches it on your own computer.</p>
+
+<dl class="facts">
+  <dt>Dump</dt>
+  <dd>Clone keychain-camera-plus and Project-Sirius into <code>third_party/</code>; the build checks the dump&rsquo;s code against a known hash before it changes anything.</dd>
+  <dt>Build</dt>
+  <dd><code>pip install -r requirements.txt</code>, then <code>python tools/build_fx.py</code>. It writes the update package and a stock package to restore with.</dd>
+  <dt>Test</dt>
+  <dd><code>python tools/emu_test.py</code> must end with ALL PASS.</dd>
+  <dt>Flash</dt>
+  <dd>Copy the one <code>.bin</code> to the root of the FAT32 card, insert it in the camera while it is off, switch on and wait for Upgrade 100%, then take the card out. Only one <code>JH_5408</code> file on the card at a time.</dd>
+  <dt>Change it</dt>
+  <dd>The looks are in <code>looks.json</code>, the text stamp in <code>fx_text/fx_text.c</code>, the font in <code>tools/fx_tables.py</code>. Rebuild with a new stamp, test, flash.</dd>
+</dl>
+</section>
+
+<!-- Sources ---------------------------------------------------------------- -->
+<section class="section" id="sec-sources">
+<h2 class="section-heading">Sources</h2>
+
+<ul class="reference-list">
+  <li>
+    <a href="https://github.com/felipeharker/hark_charmera" target="_blank" rel="noopener noreferrer">hark_charmera</a>
+    <span class="desc">The patcher, the C source, the emulator tests, the reverse-engineering notes and this page.</span>
+  </li>
+  <li>
+    <a href="https://github.com/Khimira/Project-Sirius" target="_blank" rel="noopener noreferrer">Project-Sirius</a>
+    <span class="desc">A full dump of the original Charmera&rsquo;s flash chip.</span>
+  </li>
+  <li>
+    <a href="https://github.com/benbadio/keychain-camera-plus" target="_blank" rel="noopener noreferrer">Keychain Camera Plus</a>
+    <span class="desc">A second dump, and the first notes on the SD card updater.</span>
+  </li>
+  <li>
+    <a href="https://www.arjunsriva.com/posts/tiny-camera-better-taste/" target="_blank" rel="noopener noreferrer">Better Taste for a Tiny Camera</a>
+    <span class="desc">Notes on the camera&rsquo;s filters, frames and flash layout.</span>
+  </li>
+</ul>
+</section>
+
+<!-- Colophon --------------------------------------------------------------
+     The site links: the running head's. -->
+<footer class="colophon">
+  <nav class="site-links" aria-label="Felipe E. Harker">
+    <span class="site-links-owner">Felipe E. Harker</span>
+    <a href="https://felipeharker.org/">Portfolio</a>
+    <a href="https://birds.felipeharker.org/">Ornithology Report</a>
+    <a href="https://dove.felipeharker.org/">Dove Habitat</a>
+    <a href="/" aria-current="page">Charmera</a>
+  </nav>
+  <p>Firmware <span class="data">JH5408 20250520</span>, version 2 of the patch, 4 November 2026. Kodak and Charmera are trademarks of their owners; this project is not affiliated with them.</p>
+  <p>Set in Inter or Source Serif 4, with IBM Plex Mono. Static HTML; no framework. Built to the <a href="https://felipeharker.org/standards/">Hark web standards</a>.</p>
+</footer>
+
+</article>
+
+</body>
+</html>

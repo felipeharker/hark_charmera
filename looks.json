@@ -1,0 +1,18 @@
+{
+  "_comment": [
+    "Custom hardware-tint effects added after Pixel-Gray (effect slots 12, 13, 14).",
+    "Each look programs the camera's colour processor exactly like the stock Warm/Cool/B&W modes:",
+    "  u_offset / v_offset : signed chroma shift added to Cb (blue-yellow) / Cr (red-cyan), -128..127",
+    "  u_gain   / v_gain   : chroma gain in 1/32 steps (32 = unchanged, 0 = monochrome), 0..64",
+    "Stock reference values:  Warm = (-20, +20, 5, 20)   Cool = (+20, -20, 20, 5)   B&W = (0, 0, 0, 0)",
+    "icon_fg / icon_bg: RGB colours for the 16x16 on-screen icon (the B&W half-circle shape is reused)."
+  ],
+  "looks": [
+    {"name": "Sepia",     "u_offset": -14, "v_offset": 12,  "u_gain": 0,  "v_gain": 0,
+     "icon_fg": [238, 202, 148], "icon_bg": [70, 42, 18]},
+    {"name": "Cyanotype", "u_offset": 22,  "v_offset": -14, "u_gain": 0,  "v_gain": 0,
+     "icon_fg": [128, 186, 255], "icon_bg": [10, 30, 78]},
+    {"name": "Faded",     "u_offset": -8,  "v_offset": 6,   "u_gain": 12, "v_gain": 12,
+     "icon_fg": [218, 204, 190], "icon_bg": [92, 88, 86]}
+  ]
+}

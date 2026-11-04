@@ -1,0 +1,84 @@
+/* ============================================================================
+   CHARMERA — SITE STYLESHEET
+   ----------------------------------------------------------------------------
+   This site's own rules, loaded after the Hark shared stylesheet
+   (https://felipeharker.org/standards/hark.css). Everything else the page
+   uses — tokens, the grid, masthead, sections, tables, definition grids,
+   plates, the reference list, the colophon — is the shared standard: this
+   file reads its tokens and adds only what a page of camera screenshots
+   needs and the standard has no class for. It does not restyle a class the
+   standard defines.
+
+   HOW THIS FILE IS ORGANISED
+      1.  Pixel images ............. screenshots shown larger than they are
+      2.  Screens .................. a grid of viewfinder screenshots
+      3.  Responsive ............... the standard's two breakpoints
+   ========================================================================= */
+
+
+/* ============================================================================
+   1. PIXEL IMAGES
+   The camera's screen is 160 by 80 pixels and its icons are 16 by 16. The
+   screenshots are those pixels exactly, rendered by the firmware's own code
+   in an emulator, so they are published at their own size and scaled up by
+   the browser with every pixel kept square rather than smoothed.
+
+     <img class="pixel" src="img/view-text.png" alt="…">
+   ========================================================================= */
+
+.pixel { image-rendering: pixelated; }
+
+/* The four new effect icons, one strip of 16-pixel squares, at five times
+   their size: large enough to read, small enough to stay an icon. In a
+   plate, where the standard sets every image to the full width. */
+.plate > .icon-strip {
+  width: calc(76px * 5);
+  max-width: 100%;
+}
+
+
+/* ============================================================================
+   2. SCREENS
+   A grid of viewfinder screenshots across the whole width of the page, each
+   with a one-line caption under it, in the order a reader goes through the
+   editor.
+
+     <div class="screens">
+       <figure class="screen">
+         <img class="pixel" src="img/view-text.png" alt="…">
+         <figcaption class="caption">…</figcaption>
+       </figure>
+     </div>
+   ========================================================================= */
+
+.screens {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-6) var(--work-gap);
+  align-items: start;
+  margin: 0;
+}
+
+.section > .screens { grid-column: full; }
+.section-heading + .screens { margin-top: var(--space-5); }
+.section > :not(.section-heading) + .screens,
+.section > .screens + * { margin-top: var(--space-7); }
+
+.screen { margin: 0; min-width: 0; }
+.screen > img { width: 100%; }
+.screen figcaption { margin-top: var(--space-3); }
+
+
+/* ============================================================================
+   3. RESPONSIVE
+   The standard's two widths: 860px, where its grid becomes one column, and
+   640px, a phone.
+   ========================================================================= */
+
+@media (max-width: 860px) {
+  .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .screens { grid-template-columns: minmax(0, 1fr); }
+}

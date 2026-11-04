@@ -1,0 +1,14 @@
+# Line endings and binary files.
+* text=auto
+*.py text eol=lf
+*.c text eol=lf
+*.ld text eol=lf
+*.mjs text eol=lf
+*.sh text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.bin binary
+*.elf binary

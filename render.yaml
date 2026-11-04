@@ -1,0 +1,18 @@
+# Render Blueprint for Charmera: one static service, published as it is
+# from this repository's main branch.
+#
+# It is synced as a Render Blueprint (named after this repository): a push
+# that changes it changes the service, and a setting changed in the dashboard
+# and not here is overwritten at the next sync.
+services:
+  - type: web
+    name: hark-charmera
+    runtime: static
+    repo: https://github.com/felipeharker/hark_charmera
+    branch: main
+    autoDeployTrigger: checksPass          # deploys a push once its Check workflow passes
+    renderSubdomainPolicy: disabled        # served only at its custom domain, not onrender.com
+    buildCommand: echo "No build step - site/ is published as it is"
+    staticPublishPath: site
+    domains:
+      - charmera.felipeharker.org         # a Porkbun CNAME to its onrender.com address
